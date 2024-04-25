@@ -1,30 +1,39 @@
 
-import { View, Text, Pressable } from "react-native"
+import { useEffect } from "react";
+import { Pressable, Text, View } from "react-native"
+import { DrawerActions, NavigationProp, useNavigation } from "@react-navigation/native"
+
 import { globalStyles } from "../../theme/theme"
-import { useNavigation } from "@react-navigation/native"
 import { PrimaryButton } from "../../components/shared/PrimaryButton";
+import { RootStackParams } from "../../routes/StackNavigator";
 
 export const HomeScreen = () => {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Pressable
+          onPress={ () => navigation.dispatch( DrawerActions.toggleDrawer ) }
+        >
+          <Text>Menu</Text>
+        </Pressable>
+      )
+    })
+  },[]);
 
   return (
 
     <View style={ globalStyles.container }>
 
-      {/* <Pressable
-      onPress={ () => navigation.navigate('Products' as never) }
-        style={ globalStyles.primaryButton }>
-        <Text style={ globalStyles.buttonText }>Productos</Text>
-      </Pressable> */}
-
       <PrimaryButton 
-        onPress={ () => navigation.navigate('Products' as never) }
+        onPress={ () => navigation.navigate('Products') }
         label="Productos"
       />
 
       <PrimaryButton 
-        onPress={ () => navigation.navigate('Settings' as never) }
+        onPress={ () => navigation.navigate('Settings') }
         label="Settings"
       />
 
